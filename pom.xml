@@ -67,3 +67,4 @@
 	</build>
 
 </project>
+<!-- Las dependencias necesarias ya están presentes para Spring Boot, JPA y PostgreSQL. -->

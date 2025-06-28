@@ -1,4 +1,4 @@
-# 📚 LiteraAlura
+# 📚 LiterAlura
 
 LiteralAlura es una aplicación Java con Spring Boot que permite consultar, registrar y listar libros y autores obtenidos desde la API pública de [Gutendex](https://gutendex.com/). 
 
@@ -23,8 +23,8 @@ Esta app trabaja con persistencia en base de datos e interfaz por consola, ideal
 1. **Clonar el repositorio:**
 
    ```bash
-   git clone https://github.com/tu_usuario/literalalura.git
-   cd literalalura
+   git clone https://github.com/tu_usuario/literalura.git
+   cd literalura
 2. **Construir el proyecto con Maven:**
 
    mvn clean install

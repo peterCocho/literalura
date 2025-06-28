@@ -7,6 +7,8 @@ import com.aluracursos.literalura.service.LibroService;
 import com.aluracursos.literalura.service.AutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +23,8 @@ public class LiteraluraConsola implements CommandLineRunner {
     private LibroService libroService;
     @Autowired
     private AutorService autorService;
+    @Autowired
+    private ApplicationContext context;
 
     @Override
     public void run(String... args) {
@@ -35,18 +39,29 @@ public class LiteraluraConsola implements CommandLineRunner {
             System.out.println("5. Listar libros por idioma");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
+
+            while (!scanner.hasNextInt()) {
+                System.out.print("Por favor ingrese un número válido: ");
+                scanner.next();
+            }
+
             opcion = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine();  // Limpiar el buffer
+
             switch (opcion) {
                 case 1 -> buscarYRegistrarLibro(scanner);
                 case 2 -> listarLibros();
                 case 3 -> listarAutores();
                 case 4 -> listarAutoresVivos(scanner);
                 case 5 -> listarLibrosPorIdioma(scanner);
-                case 0 -> System.out.println("¡Hasta luego!");
+                case 0 -> {
+                    System.out.println("¡Hasta luego!");
+                    SpringApplication.exit(context);
+                    return;
+                }
                 default -> System.out.println("Opción inválida");
             }
-        } while (opcion != 0);
+        } while (true); // Salida controlada por el return del case 0
     }
 
     private void buscarYRegistrarLibro(Scanner scanner) {

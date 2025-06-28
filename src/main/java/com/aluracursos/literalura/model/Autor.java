@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Autor {
+public class
+Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

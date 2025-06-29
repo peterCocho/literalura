@@ -37,6 +37,7 @@ public class LiteraluraConsola implements CommandLineRunner {
             System.out.println("3. Listar autores registrados");
             System.out.println("4. Listar autores vivos en un año");
             System.out.println("5. Listar libros por idioma");
+            System.out.println("6. Mostrar top 10 libros más descargados de Gutendex");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -54,6 +55,8 @@ public class LiteraluraConsola implements CommandLineRunner {
                 case 3 -> listarAutores();
                 case 4 -> listarAutoresVivos(scanner);
                 case 5 -> listarLibrosPorIdioma(scanner);
+                case 6 -> mostrarTop10LibrosMasDescargados();
+                
                 case 0 -> {
                     System.out.println("¡Hasta luego!");
                     SpringApplication.exit(context);
@@ -64,19 +67,32 @@ public class LiteraluraConsola implements CommandLineRunner {
         } while (true); // Salida controlada por el return del case 0
     }
 
+    private void mostrarTop10LibrosMasDescargados() {
+        List<Libro> libros = gutendexService.obtenerTop10LibrosMasDescargados();
+        if (libros.isEmpty()) {
+            System.out.println("No se pudieron obtener los libros más descargados.");
+            return;
+        }
+        System.out.println("\nTop 10 libros más descargados de Gutendex:");
+        libros.forEach(l -> System.out.println(
+                l.getTitulo() + " | " + l.getAutor().getApellido() + ", " + l.getAutor().getNombre() +
+                        " | Idioma: " + l.getIdioma() + " | Descargas: " + l.getDescargas()
+        ));
+    }
+
     private void buscarYRegistrarLibro(Scanner scanner) {
         System.out.print("Ingrese el título del libro: ");
         String titulo = scanner.nextLine();
-        if (libroService.existeLibro(titulo)) {
-            System.out.println("El libro ya está registrado en la base de datos.");
-            return;
-        }
         Optional<Libro> libroOpt = gutendexService.buscarLibroPorTitulo(titulo);
         if (libroOpt.isEmpty()) {
             System.out.println("El libro no fue encontrado en la API de Gutendex.");
             return;
         }
         Libro libro = libroOpt.get();
+        if (libroService.existeLibro(libro.getTitulo(), libro.getAutor().getNombre(), libro.getAutor().getApellido())) {
+            System.out.println("El libro ya está registrado en la base de datos.");
+            return;
+        }
         libroService.guardarLibro(libro);
         System.out.println("Libro registrado exitosamente: " + libro.getTitulo());
     }

@@ -16,9 +16,11 @@ public class LibroService {
     @Autowired
     private AutorRepository autorRepository;
 
-    public boolean existeLibro(String titulo) {
-        return libroRepository.existsByTituloIgnoreCase(titulo);
+    public boolean existeLibro(String titulo, String nombreAutor, String apellidoAutor) {
+        return libroRepository.existsByTituloIgnoreCaseAndAutor_NombreIgnoreCaseAndAutor_ApellidoIgnoreCase(
+                titulo.trim(), nombreAutor.trim(), apellidoAutor.trim());
     }
+
 
     public Libro guardarLibro(Libro libro) {
         // Buscar o guardar autor
@@ -41,7 +43,7 @@ public class LibroService {
         return libroRepository.findByIdioma(idioma);
     }
 
-    public List<Libro> top10LibrosDescargados() {
+    public List<Libro> mostrarTop10LibrosMasDescargados() {
         return libroRepository.findTop10ByOrderByDescargasDesc();
     }
 }

@@ -11,7 +11,7 @@ public class Libro {
     private String idioma;
     private Integer descargas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "autor_id")
     private Autor autor;
 
